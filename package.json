@@ -7,6 +7,11 @@
   "engines": {
     "node": ">=4.0.0"
   },
+  "files": [
+    "index.js",
+    "upyet.js",
+    "util"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TechnologyAdvice/upyet.git"
@@ -26,6 +31,8 @@
     "mocha": "^2.5.3"
   },
   "dependencies": {
-    "bluebird": "^3.4.0"
+    "bluebird": "^3.4.0",
+    "lodash": "^4.13.1",
+    "minimist": "^1.2.0"
   }
 }
