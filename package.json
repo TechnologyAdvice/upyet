@@ -10,7 +10,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TechnologyAdvice/upyet.git"
-  }
+  },
   "scripts": {
     "test": "npm run lint && npm run cover",
     "lint": "eslint . --fix",
@@ -24,5 +24,8 @@
     "eslint": "^2.11.0",
     "istanbul": "^0.4.3",
     "mocha": "^2.5.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.0"
   }
 }
