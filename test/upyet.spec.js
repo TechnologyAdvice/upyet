@@ -1,4 +1,5 @@
-const upyet = require('index.js')
+'use strict'
+const upyet = require('upyet.js')
 
 describe('upyet', () => {
   describe('parseResource', () => {
