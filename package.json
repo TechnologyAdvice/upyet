@@ -1,0 +1,28 @@
+{
+  "name": "upyet",
+  "version": "0.0.1",
+  "description": "coming soon",
+  "main": "index.js",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TechnologyAdvice/upyet.git"
+  }
+  "scripts": {
+    "test": "npm run lint && npm run cover",
+    "lint": "eslint . --fix",
+    "cover": "istanbul cover _mocha",
+    "mocha": "mocha"
+  },
+  "author": "Kent Safranski <kent@fluidbyte.net>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.11.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3"
+  }
+}
