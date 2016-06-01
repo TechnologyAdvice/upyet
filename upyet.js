@@ -24,7 +24,11 @@ const upyet = {
    * Returns a net connection
    * @param {String} resource The resource with which to create connection
    */
-  createConn: (resource) => net.createConnection.apply(null, upyet.parseResource(resource))
+  createConn: (resource) => net.createConnection.apply(null, upyet.parseResource(resource)),
+
+  run: (resources, cfg) => {
+
+  }
 
 }
 

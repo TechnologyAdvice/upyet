@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "coming soon",
   "main": "index.js",
+  "bin": "cli.js",
   "engineStrict": true,
   "engines": {
     "node": ">=4.0.0"
