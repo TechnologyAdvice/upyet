@@ -7,20 +7,20 @@ const _ = require('lodash')
  * @param {Object} argv Arguments as processed by input handler
  * @returns {Object}
  */
-const args = (config, argv) => {
+const args = (conf, argv) => {
+  const out = { resources: [], config: {} }
   // Grab loose array args if exist
-  const resources = argv._.length ? argv._ : null
-  // Don't need this anymore
-  delete argv._
+  out.resources = argv._.length ? argv._ : null
   // Match up flags/short-flags with config vars
   _.forOwn(argv, (flagVal, flag) => {
-    _.forOwn(config, (entry, key) => {
+    _.forOwn(conf, (entry, key) => {
       if (flag === key || flag === entry.alias) {
-        entry.val = flagVal
+        out.config[key] = entry
+        out.config[key].val = flagVal
       }
     })
   })
-  return { resources, config }
+  return out
 }
 
 module.exports = args
