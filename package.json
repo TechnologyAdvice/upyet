@@ -6,12 +6,12 @@
   "bin": "cli.js",
   "engineStrict": true,
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4"
   },
   "files": [
     "index.js",
     "upyet.js",
-    "util"
+    "cli.js"
   ],
   "repository": {
     "type": "git",

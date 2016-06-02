@@ -20,11 +20,9 @@ const upyet = {
    * @returns {Array}
    */
   parseResource: (resource) => {
-    if (resource.indexOf(':') >= 0) {
-      const res = resource.split(':')
-      return [ parseInt(res[1], 10), res[0] ]
-    }
-    throw new Error(`Resource (${resource}) must include port designation`)
+    if (!resource.indexOf(':')) throw new Error(`Resource (${resource}) must include port designation`)
+    const res = resource.split(':')
+    return [ parseInt(res[1], 10), res[0] ]
   },
 
   /**
