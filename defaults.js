@@ -1,7 +1,9 @@
 'use strict'
 module.exports = {
+  // --retries, -r
+  retries: 30,
   // --timeout, -t
-  timeout: 5000,
+  timeout: 100,
   // --file, -f
   file: null
 }

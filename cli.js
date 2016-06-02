@@ -27,7 +27,7 @@ const cli = {
    */
   parseConfig: (args) => {
     const out = { config: {} }
-    out.resources = args._ || null
+    out.resources = args._ || []
     _.forOwn(defaults, (val, key) => {
       // Set default
       out.config[key] = val
@@ -59,8 +59,7 @@ const cli = {
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
-    const opts = cli.parseConfig(argv)
-    upyet.run(opts.resources, opts.config)
+    upyet.run(cli.parseConfig(argv))
       .then(cli.handleSuccess)
       .catch(cli.handleError)
   }

@@ -1,11 +1,17 @@
 'use strict'
+const fs = require('fs')
 const net = require('net')
+Promise.promisifyAll(fs)
 // const Promise = require('bluebird')
 
 const upyet = {
-
-  // Holds resources to check
-  resources: [],
+  
+  /**
+   * Reads in resources from file
+   * @param {Object} config The config object
+   * @returns {Object] promise
+   */
+  readResourcesFile: (config) => !cfg.file ? Promise.resolve([]) : fs.readFileAsync(file),
 
   /**
    * Parses a resource to split host and port
@@ -19,15 +25,38 @@ const upyet = {
     }
     throw new Error(`Resource (${resource}) must include port designation`)
   },
+  
+  testResource: (resource, config) => {
+    return new Promise((resolve, reject) => {
+      let log = 0
+      const testConn = () => {
+        const conn = net.createConnection.apply(null, upyet.parseResource(resource))
+        conn.on('connect', resolve)
+        conn.on('error', () => {
+          log++
+          if (log >= config.retries) reject()
+          setTimeout(testConn, config.timeout)
+        })
+      }
+    })
+  },
 
   /**
-   * Returns a net connection
-   * @param {String} resource The resource with which to create connection
+   * Runs the upyet process
+   * @param {Object} config The config object
+   * @returns {Object} promise
    */
-  createConn: (resource) => net.createConnection.apply(null, upyet.parseResource(resource)),
-
-  run: (resources, cfg) => {
-
+  run: (config) => {
+    return upyet.readResourcesFile(config)
+      .then(res => {
+        config.resources = config.resources.concat(res)
+        if (!config.resources.length) {
+          throw new Error('No resources supplied')
+        }
+        return Promise.map(config.resources, res => {
+          return upyet.testResource(res, config)
+        })
+      })
   }
 
 }
