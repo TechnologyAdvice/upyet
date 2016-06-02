@@ -6,7 +6,7 @@ const Promise = require('bluebird')
 Promise.promisifyAll(fs)
 
 const upyet = {
-  
+
   /**
    * Reads in resources from file or resolves empty array
    * @param {Object} config The config object
@@ -26,7 +26,7 @@ const upyet = {
     }
     throw new Error(`Resource (${resource}) must include port designation`)
   },
-  
+
   /**
    * Runs tests against resources for config'd tries x timeout
    * @param {String} resource The resource to test
@@ -55,8 +55,8 @@ const upyet = {
    */
   run: (config) => {
     return upyet.loadResources(config)
-      .then(res => {
-        config.resources = config.resources.concat(res)
+      .then(resources => {
+        config.resources = config.resources.concat(resources)
         if (!config.resources.length) throw new Error('No resources supplied')
         return Promise.map(config.resources, res => upyet.testResource(res, config))
       })

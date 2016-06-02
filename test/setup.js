@@ -1,4 +1,6 @@
 'use strict'
+// Block cli from running automatically
+process.env.TEST = true
 // Setup test suite resources
 const chai = require('chai')
 global.expect = chai.expect
