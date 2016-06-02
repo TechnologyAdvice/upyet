@@ -10,6 +10,10 @@ const argv = require('yargs')
     alias: 'timeout',
     describe: 'Alloted time (ms) before failure is assumed'
   })
+  .option('f', {
+    alias: 'file',
+    describe: 'File specifying resources'
+  })
   .version(pkg.version)
   .help('help')
   .argv
