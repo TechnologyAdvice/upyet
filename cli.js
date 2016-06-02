@@ -12,14 +12,22 @@ const argv = require('yargs')
   })
   .version(pkg.version)
   .help('help')
-  .argv;
+  .argv
 
 const cli = {
   
+  /**
+   * Parse arguments to return setup/config object
+   * @param {Object} args Arguments from CLI command
+   * @returns {Object}
+   */
   parseConfig: (args) => {
     const out = { config: {} }
     out.resources = args._ || null
     _.forOwn(defaults, (val, key) => {
+      // Set default
+      out.config[key] = val
+      // If passed in CLI, override
       if (args[key] && key !== '_') {
         out.config[key] = args[key]
       }
@@ -27,11 +35,19 @@ const cli = {
     return out
   },
   
-  handleSuccess: (stats) => {
+  /**
+   * Called when checks are successful
+   * @param {Array} results
+   */
+  handleSuccess: (results) => {
     output('Done!')
   },
-
-  handleError: (stats) => {
+  
+  /**
+   * Called when checks fail
+   * @param {Array} results
+   */
+  handleError: (results) => {
     output('Failed!')
   },
 
@@ -39,6 +55,7 @@ const cli = {
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
+    const opts = cli.parseConfig(argv)
     upyet.run(opts.resources, opts.config)
       .then(cli.handleSuccess)
       .catch(cli.handleError)
