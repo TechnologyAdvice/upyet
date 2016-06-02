@@ -3,11 +3,11 @@ const cli = require('cli.js')
 const _ = require('lodash')
 
 describe('cli', () => {
-  describe('args', () => {
-    it('returns resources and config from arguments and default config', () => {
-      const argv = { _: [ 'foo', 'bar' ], t: 1234 }
-      const actual = cli.args(argv)
-      expect(actual).to.deep.equal({ resources: argv._, config: { timeout: 1234 } })
+  describe.only('parseConfig', () => {
+    it('processes arguments against defaults to return config and resources', () => {
+      const args = { _: [ 'foo' ], t: 1000, timeout: 1000 }
+      const actual = cli.parseConfig(args)
+      expect(actual).to.deep.equal({ config: { timeout: 1000 }, resources: [ 'foo' ] })
     })
   })
 })

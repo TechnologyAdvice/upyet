@@ -1,57 +1,53 @@
 'use strict'
 const _ = require('lodash')
 const upyet = require('./upyet')
+const defaults = require('./defaults')
+const pkg = require('./package.json')
+
+const argv = require('yargs')
+  .usage('Usage: $0 [options] <resources>')
+  .option('t', {
+    alias: 'timeout',
+    describe: 'Alloted time (ms) before failure is assumed'
+  })
+  .version(pkg.version)
+  .help('help')
+  .argv;
 
 const cli = {
-
-  defaultConfig: {
-    timeout: {
-      alias: 't',
-      val: 3000
-    },
-    file: {
-      alias: 'f',
-      val: null
-    }
-  },
-
-  /**
-   * Processes defaults and arguments to return a config object
-   * @param {Object} conf Configuration object (defaults)
-   * @returns {Object}
-   */
-  args: (argv) => {
+  
+  parseConfig: (args) => {
     const out = { config: {} }
-    // Grab loose array args as resources if exist
-    out.resources = argv._.length ? argv._ : null
-    // Match up flags/short-flags with config vars
-    _.forOwn(argv, (flagVal, flag) => {
-      _.forOwn(cli.defaultConfig, (entry, key) => {
-        if (flag === key || flag === entry.alias) {
-          out.config[key] = flagVal
-        }
-      })
+    out.resources = args._ || null
+    _.forOwn(defaults, (val, key) => {
+      if (args[key] && key !== '_') {
+        out.config[key] = args[key]
+      }
     })
     return out
   },
-
+  
   handleSuccess: (stats) => {
-    console.log('Done!')
+    output('Done!')
   },
 
   handleError: (stats) => {
-    console.log('Failed!')
+    output('Failed!')
   },
 
   /**
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
-    const setup = cli.args(require('minimist')(process.argv.slice(2)))
-    return upyet.run(setup.resources, setup.config)
+    upyet.run(opts.resources, opts.config)
       .then(cli.handleSuccess)
       .catch(cli.handleError)
   }
 }
 
+cli.run()
+
 module.exports = cli
+
+/* eslint no-console:0 */
+const output = console.log;
