@@ -1,17 +1,18 @@
 'use strict'
 const fs = require('fs')
 const net = require('net')
+const Promise = require('bluebird')
+
 Promise.promisifyAll(fs)
-// const Promise = require('bluebird')
 
 const upyet = {
   
   /**
-   * Reads in resources from file
+   * Reads in resources from file or resolves empty array
    * @param {Object} config The config object
    * @returns {Object] promise
    */
-  readResourcesFile: (config) => !cfg.file ? Promise.resolve([]) : fs.readFileAsync(file),
+  loadResources: (config) => !config.file ? Promise.resolve([]) : fs.readFileAsync(file),
 
   /**
    * Parses a resource to split host and port
@@ -26,6 +27,12 @@ const upyet = {
     throw new Error(`Resource (${resource}) must include port designation`)
   },
   
+  /**
+   * Runs tests against resources for config'd tries x timeout
+   * @param {String} resource The resource to test
+   * @param {Object} config The run config
+   * @returns {Object} promise
+   */
   testResource: (resource, config) => {
     return new Promise((resolve, reject) => {
       let log = 0
@@ -47,33 +54,14 @@ const upyet = {
    * @returns {Object} promise
    */
   run: (config) => {
-    return upyet.readResourcesFile(config)
+    return upyet.loadResources(config)
       .then(res => {
         config.resources = config.resources.concat(res)
-        if (!config.resources.length) {
-          throw new Error('No resources supplied')
-        }
-        return Promise.map(config.resources, res => {
-          return upyet.testResource(res, config)
-        })
+        if (!config.resources.length) throw new Error('No resources supplied')
+        return Promise.map(config.resources, res => upyet.testResource(res, config))
       })
   }
 
 }
 
 module.exports = upyet
-
-/*
-Promise.map(resources, (res) => {
-  const testConn = () => {
-    const conn = createConn(res)
-    conn.on('connect', () => {
-
-    })
-    conn.on('error', () => {
-
-      setTimeout(testConn, 100)
-    })
-  }
-})
-*/
