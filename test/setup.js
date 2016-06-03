@@ -3,7 +3,11 @@
 process.env.TEST = true
 // Setup test suite resources
 const chai = require('chai')
+const sinon = require('sinon')
+const schai = require('sinon-chai')
 global.expect = chai.expect
+global.sinon = sinon
+chai.use(schai)
 
 // Better pathing; all relative to root
 const path = require('path')

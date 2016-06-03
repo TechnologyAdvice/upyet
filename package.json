@@ -29,7 +29,9 @@
     "chai": "^3.5.0",
     "eslint": "^2.11.0",
     "istanbul": "^0.4.3",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0"
   },
   "dependencies": {
     "bluebird": "^3.4.0",

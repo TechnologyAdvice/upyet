@@ -4,9 +4,6 @@ const upyet = require('./upyet')
 const defaults = require('./defaults')
 const pkg = require('./package.json')
 
-/* eslint no-console:0 */
-const output = console.log
-
 const argv = require('yargs')
   .usage('Usage: $0 [options] <resources>')
   .option('t', {
@@ -22,6 +19,9 @@ const argv = require('yargs')
   .argv
 
 const cli = {
+  
+  /* eslint no-console:0 */
+  output: console.log,
 
   /**
    * Parse arguments to return setup/config object
@@ -47,7 +47,7 @@ const cli = {
    * @param {Array} results
    */
   handleSuccess: (results) => {
-    output('Done!', results)
+    cli.output('Done!', results)
   },
 
   /**
@@ -55,7 +55,7 @@ const cli = {
    * @param {Array} results
    */
   handleError: (results) => {
-    output('Failed!', results)
+    cli.output('Failed!', results)
   },
 
   /**
