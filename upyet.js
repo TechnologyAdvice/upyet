@@ -6,13 +6,15 @@ const Promise = require('bluebird')
 Promise.promisifyAll(fs)
 
 const upyet = {
+  
+  results: {},
 
   /**
    * Reads in resources from file or resolves empty array
    * @param {Object} config The config object
    * @returns {Object] promise
    */
-  loadResources: (config) => !config.file ? Promise.resolve([]) : fs.readFileAsync(file),
+  loadResources: (config) => !config.file ? Promise.resolve([]) : fs.readFileAsync(config.file),
 
   /**
    * Parses a resource to split host and port
@@ -36,13 +38,20 @@ const upyet = {
       let log = 0
       const testConn = () => {
         const conn = net.createConnection.apply(null, upyet.parseResource(resource))
-        conn.on('connect', resolve)
+        conn.on('connect', () => {
+          upyet.results[resource] = { retries: log, time: (log*config.config.timeout), result: 'connected' }
+          resolve()
+        })
         conn.on('error', () => {
           log++
-          if (log >= config.retries) reject()
-          setTimeout(testConn, config.timeout)
+          if (log >= config.config.retries) {
+            upyet.results[resource] = { retries: log, time: (log*config.config.timeout), result: 'failed' }
+            reject()
+          }
+          setTimeout(testConn, config.config.timeout)
         })
       }
+      testConn()
     })
   },
 

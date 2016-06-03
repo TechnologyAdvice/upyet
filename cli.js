@@ -6,6 +6,10 @@ const pkg = require('./package.json')
 
 const argv = require('yargs')
   .usage('Usage: $0 [options] <resources>')
+  .option('r', {
+    alias: 'retries',
+    describe: 'Number of retries to make on connection'
+  })
   .option('t', {
     alias: 'timeout',
     describe: 'Alloted time (ms) before failure is assumed'
@@ -22,6 +26,8 @@ const cli = {
   
   /* eslint no-console:0 */
   output: console.log,
+  
+  formatOutput: (out) => JSON.stringify(out, null, 4),
 
   /**
    * Parse arguments to return setup/config object
@@ -46,22 +52,30 @@ const cli = {
    * Called when checks are successful
    * @param {Array} results
    */
-  handleSuccess: (results) => {
-    cli.output('Done!', results)
+  handleSuccess: () => {
+    cli.output('Done!\n', cli.formatOutput(upyet.results))
+    process.exit(0)
   },
 
   /**
    * Called when checks fail
    * @param {Array} results
    */
-  handleError: (results) => {
-    cli.output('Failed!', results)
+  handleError: () => {
+    cli.output('Failed!\n', cli.formatOutput(upyet.results))
+    process.exit(1)
   },
 
   /**
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
+    process.stdout.write('Running')
+    const addDot = () => {
+      process.stdout.write('.')
+      setTimeout(addDot, 100)
+    }
+    addDot()
     upyet.run(cli.parseConfig(argv))
       .then(cli.handleSuccess)
       .catch(cli.handleError)
