@@ -27,7 +27,7 @@ const cli = {
   /* eslint no-console:0 */
   output: console.log,
   
-  formatOutput: (out) => JSON.stringify(out, null, 4),
+  formatOutput: (out) => '\n' + JSON.stringify(out, null, 4),
 
   /**
    * Parse arguments to return setup/config object
@@ -35,14 +35,14 @@ const cli = {
    * @returns {Object}
    */
   parseConfig: (args) => {
-    const out = { config: {} }
+    const out = {}
     out.resources = args._ || []
     _.forOwn(defaults, (val, key) => {
       // Set default
-      out.config[key] = val
+      out[key] = val
       // If passed in CLI, override
       if (args[key] && key !== '_') {
-        out.config[key] = args[key]
+        out[key] = args[key]
       }
     })
     return out
@@ -70,6 +70,10 @@ const cli = {
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
+    process.on('SIGINT', () => {
+      cli.output(cli.formatOutput(upyet.results))
+      process.exit(130)
+    })
     process.stdout.write('Running')
     const addDot = () => {
       process.stdout.write('.')
