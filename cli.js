@@ -23,10 +23,10 @@ const argv = require('yargs')
   .argv
 
 const cli = {
-  
+
   /* eslint no-console:0 */
   output: console.log,
-  
+
   formatOutput: (out) => '\n' + JSON.stringify(out, null, 4),
 
   /**
@@ -54,7 +54,7 @@ const cli = {
    */
   handleSuccess: () => {
     cli.output('Done!\n', cli.formatOutput(upyet.results))
-    process.exit(0)
+    if (!module.parent) process.exit(0)
   },
 
   /**
@@ -63,7 +63,7 @@ const cli = {
    */
   handleError: () => {
     cli.output('Failed!\n', cli.formatOutput(upyet.results))
-    process.exit(1)
+    if (!module.parent) process.exit(1)
   },
 
   /**

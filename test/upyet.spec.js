@@ -2,6 +2,20 @@
 const upyet = require('upyet.js')
 
 describe('upyet', () => {
+  describe('loadResources', () => {
+    it('resolves with an empty array if no file is specified', () => {
+      return upyet.loadResources({ file: null })
+        .then((res) => {
+          expect(res.length).to.equal(0)
+        })
+    })
+    it('resolves with the contents of specified file', () => {
+      return upyet.loadResources({ file: './test/fixtures/loadfile.txt' })
+        .then((res) => {
+          expect(res.length).to.be.above(1)
+        })
+    })
+  })
   describe('parseResource', () => {
     it('returns an array containing the port and resource host', () => {
       const actual = upyet.parseResource('somehost.com:8888')

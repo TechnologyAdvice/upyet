@@ -1,0 +1,2 @@
+resource1.com:8888
+resource2.com:9999

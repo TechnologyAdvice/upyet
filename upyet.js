@@ -6,7 +6,7 @@ const Promise = require('bluebird')
 Promise.promisifyAll(fs)
 
 const upyet = {
-  
+
   results: {},
 
   /**
@@ -14,7 +14,15 @@ const upyet = {
    * @param {Object} config The config object
    * @returns {Object] promise
    */
-  loadResources: (config) => !config.file ? Promise.resolve([]) : fs.readFileAsync(config.file),
+  loadResources: (config) => {
+    if (!config.file) {
+      return Promise.resolve([])
+    }
+    return fs.readFileAsync(config.file)
+      .then((res) => {
+        return res.toString().split('\n')
+      })
+  },
 
   /**
    * Parses a resource to split host and port
@@ -34,37 +42,31 @@ const upyet = {
    * @returns {Object} promise
    */
   testResource: (resource, config) => {
-    
-    /**
-     * PROBLEM:
-     * IF it hasn't resolved or gone into error triggered 
-     * timeout need to force a reconnect to ensure we don't 
-     * sit with an open connection and NOT retry
-     */
-      
     return new Promise((resolve, reject) => {
       let log = 0
       let retryTimeout
+      // Encapsulate process for recurse in timeout for retries
       const testConn = () => {
         log++
         clearTimeout(retryTimeout)
         const conn = net.createConnection.apply(null, upyet.parseResource(resource))
         const checkRetry = (type) => {
           if (log >= config.retries) {
-            upyet.results[resource] = { retries: log, time: (log*config.timeout), result: type }
+            upyet.results[resource] = { retries: log, time: log * config.timeout, result: type }
             reject()
           }
           retryTimeout = setTimeout(testConn, config.timeout)
         }
         // If it connects, we're all good
         conn.on('connect', () => {
-          upyet.results[resource] = { retries: log, time: (log*config.timeout), result: 'connected' }
+          log--
+          upyet.results[resource] = { retries: log, time: log * config.timeout, result: 'connected' }
           clearTimeout(retryTimeout)
           resolve()
         })
         // On connect error, retry
         conn.on('error', checkRetry.bind(null, 'error'))
-        // If the connection doesn't do anything at all trigger a retry...
+        // If the connection doesn't do anything at all (hang/timeout) trigger a retry...
         checkRetry('timeout')
       }
       testConn()
