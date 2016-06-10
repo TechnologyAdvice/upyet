@@ -27,7 +27,20 @@ const cli = {
   /* eslint no-console:0 */
   output: console.log,
 
+  /**
+   * Formats JSON output
+   * @param {Object} out The objext to format
+   * @returns {String}
+   */
   formatOutput: (out) => '\n' + JSON.stringify(out, null, 4),
+  
+  /**
+   * Handles exiting of running process
+   * @param {Number} code The exit code
+   */
+  exitProcess: (code) => {
+    if (!module.parent) process.exit(code)
+  },
 
   /**
    * Parse arguments to return setup/config object
@@ -54,7 +67,7 @@ const cli = {
    */
   handleSuccess: () => {
     cli.output('Done!\n', cli.formatOutput(upyet.results))
-    if (!module.parent) process.exit(0)
+    cli.exitProcess(0)
   },
 
   /**
@@ -63,7 +76,7 @@ const cli = {
    */
   handleError: () => {
     cli.output('Failed!\n', cli.formatOutput(upyet.results))
-    if (!module.parent) process.exit(1)
+    cli.exitProcess(1)
   },
 
   /**
@@ -72,7 +85,7 @@ const cli = {
   run: () => {
     process.on('SIGINT', () => {
       cli.output(cli.formatOutput(upyet.results))
-      process.exit(130)
+      cli.exitProcess(130)
     })
     process.stdout.write('Running')
     const addDot = () => {

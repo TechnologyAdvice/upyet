@@ -4,6 +4,11 @@ const cli = require('cli.js')
 describe('cli', () => {
   const outputSpy = sinon.spy(cli, 'output')
   after(() => cli.output.restore())
+  describe('formatOutput', () => {
+    it('converts passed results object to JSON string', () => {
+      expect(cli.formatOutput({ foo: 'bar' })).to.be.a.string
+    })
+  })
   describe('parseConfig', () => {
     it('processes arguments against defaults to return config and resources', () => {
       const args = { _: [ 'foo' ], t: 1000, timeout: 1000 }
