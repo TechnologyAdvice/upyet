@@ -1,8 +1,16 @@
-[![CircleCI token](https://img.shields.io/circleci/project/TechnologyAdvice/upyet/master.svg)]()
+[![CircleCI](https://img.shields.io/circleci/project/TechnologyAdvice/upyet/master.svg)]()
 
 # UpYet
 
 Paralell, multi-resource CLI and modular resource availability detection script.
+
+## Installation
+
+```
+npm install upyet
+```
+
+*Use the `-g` flag for global CLI install*
 
 ## Examples - Module
 
@@ -35,6 +43,11 @@ upyet(testConfig).then((res) => {
 upyet resource.com:5432
 ```
 
+### Flag Config
+```
+upyet resource.com:5432 -r 10 -t 100
+```
+
 ### Multiple Resources
 ```
 upyet resource-a.com:5432 resource-b:2345
@@ -57,5 +70,6 @@ resource-b.com:2345
 
 | Option  | Name (module) | Flag (CLI)        | Description                                                           |
 |---------|---------------|-------------------|-----------------------------------------------------------------------|
+| Retries | `retries`     | `-r`, `--retries` | Designates the number of attempts to make to connect to resource      |
 | Timeout | `timeout`     | `-t`, `--timeout` | Designates the time (in milliseconds) at which script assumes failure |
 | File    | `file`        | `-f`, `--file`    | Line-delimited file from which to load resources                      |
