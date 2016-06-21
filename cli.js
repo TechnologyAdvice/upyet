@@ -33,12 +33,13 @@ const cli = {
    * @returns {String}
    */
   formatOutput: (out) => '\n' + JSON.stringify(out, null, 4),
-  
+
   /**
    * Handles exiting of running process
    * @param {Number} code The exit code
    */
   exitProcess: (code) => {
+    // istanbul ignore next
     if (!module.parent) process.exit(code)
   },
 
@@ -100,6 +101,7 @@ const cli = {
 }
 
 // Only run if actually call from CLI
+// istanbul ignore next
 if (!module.parent) cli.run()
 
 module.exports = cli
