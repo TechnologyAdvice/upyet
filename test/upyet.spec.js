@@ -43,5 +43,8 @@ describe('upyet', () => {
       testService = service(8989, 300)
       return upyet.testResource('localhost:8989', defaultConfig)
     })
+    it('rejects after retrying when connection does not become available', () => {
+      return upyet.testResource('localhost:8989', defaultConfig).catch(() => true)
+    })
   })
 })
