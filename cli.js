@@ -84,16 +84,21 @@ const cli = {
    * Calls fn to process args then calls upyet run method
    */
   run: () => {
+    // istanbul ignore next
     process.on('SIGINT', () => {
       cli.output(cli.formatOutput(upyet.results))
       cli.exitProcess(130)
     })
+    // istanbul ignore next
     process.stdout.write('Running')
+    // istanbul ignore next
     const addDot = () => {
       process.stdout.write('.')
       setTimeout(addDot, 100)
     }
+    // istanbul ignore next
     addDot()
+    // istanbul ignore next
     upyet.run(cli.parseConfig(argv))
       .then(cli.handleSuccess)
       .catch(cli.handleError)
