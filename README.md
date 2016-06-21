@@ -1,6 +1,32 @@
+[![CircleCI token](https://img.shields.io/circleci/project/TechnologyAdvice/upyet/master.svg)]()
+
 # UpYet
 
 Paralell, multi-resource CLI and modular resource availability detection script.
+
+## Examples - Module
+
+```javascript
+const upyet = require('upyet')
+
+// Run config example: 
+const testConfig = {
+  resources: [ 'google.com:80', 'foo.bar:443' ],
+  config: {
+    retries: 3,
+    timeout: 10
+  }
+}
+
+// Execution:
+upyet(testConfig).then((res) => {
+  console.log('Connected, results:', res)
+}).catch((res) => {
+  console.log('Failed, results:', res)
+})
+```
+
+---
 
 ## Examples - CLI
 
@@ -23,23 +49,6 @@ Resource File Formatting:
 ```
 resource-a.com:5432
 resource-b.com:2345
-```
-
----
-
-## Examples - Module
-
-### Basic
-
-The `upyet` object accepts two arguments; the `resources <Array>` which is required and a `config <Object>` which is optional
-
-```javascript
-const upyet = require('upyet')
-upyet(['resource.com:5432']).then((stats) => {
-  // Array of resource stats
-}).catch((errors) => {
-  // Array of stats and errors
-})
 ```
 
 ---
