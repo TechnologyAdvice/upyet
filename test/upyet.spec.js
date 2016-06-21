@@ -1,5 +1,6 @@
 'use strict'
 const upyet = require('upyet.js')
+const service = require('test/fixtures/service')
 
 describe('upyet', () => {
   describe('loadResources', () => {
@@ -23,6 +24,24 @@ describe('upyet', () => {
     })
     it('throws an error if the resource is incorrectly formatted', () => {
       expect(upyet.parseResource.bind(null, 'somehost.com')).to.throw('Resource (somehost.com) must include port designation')
+    })
+  })
+  describe('testResource', () => {
+    let testService
+    const defaultConfig = {
+      timeout: 100,
+      retries: 5
+    }
+    afterEach(() => {
+      testService.close()
+    })
+    it('resolves when a service is available and connects', () => {
+      testService = service(8989, 0)
+      return upyet.testResource('localhost:8989', defaultConfig)
+    })
+    it('resolves after at retrying when connection becomes available', () => {
+      testService = service(8989, 300)
+      return upyet.testResource('localhost:8989', defaultConfig)
     })
   })
 })
