@@ -39,7 +39,7 @@ describe('upyet', () => {
       testService = service(8989, 0)
       return upyet.testResource('localhost:8989', defaultConfig)
     })
-    it('resolves after at retrying when connection becomes available', () => {
+    it('resolves after retrying when connection becomes available', () => {
       testService = service(8989, 300)
       return upyet.testResource('localhost:8989', defaultConfig)
     })

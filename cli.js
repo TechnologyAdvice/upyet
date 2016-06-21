@@ -12,7 +12,7 @@ const argv = require('yargs')
   })
   .option('t', {
     alias: 'timeout',
-    describe: 'Alloted time (ms) before failure is assumed'
+    describe: 'Allotted time (ms) before failure is assumed'
   })
   .option('f', {
     alias: 'file',
@@ -105,7 +105,7 @@ const cli = {
   }
 }
 
-// Only run if actually call from CLI
+// Only run if actually called from CLI
 // istanbul ignore next
 if (!module.parent) cli.run()
 

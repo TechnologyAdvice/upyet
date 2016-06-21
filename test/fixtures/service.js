@@ -3,7 +3,7 @@ const http = require('http')
 
 /**
  * Allows creating of service after a delay
- * @param {Number} port The port designatoion of http service
+ * @param {Number} port The port designation of http service
  * @param {Number} delay Milliseconds to delay starting the service
  * @returns {Object} http server object
  */

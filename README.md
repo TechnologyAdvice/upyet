@@ -2,7 +2,7 @@
 
 # UpYet
 
-Paralell, multi-resource CLI and modular resource availability detection script.
+Parallel, multi-resource CLI and modular resource availability detection script.
 
 ## Installation
 
