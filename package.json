@@ -1,6 +1,6 @@
 {
   "name": "upyet",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Parallel, multi-resource CLI and modular resource availability detection script",
   "main": "index.js",
   "bin": "cli.js",
